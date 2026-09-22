@@ -1,5 +1,6 @@
 ; SoC Next-Gen Fix - Главный файл погоды (weather.ltx)
 ; Циклы смены погоды для X-Ray движка
+; Формат: time_from/time_to задают интервалы времени суток
 
 [default]
 cycles = clear_day, clear_evening, clear_night, clear_morning
@@ -14,7 +15,7 @@ env_section = clear_day
 time_from = 12.0
 time_to = 18.0
 weather = clear
-env_section = clear_day
+env_section = clear_evening
 
 [clear_night]
 time_from = 18.0
@@ -26,7 +27,7 @@ env_section = clear_night
 time_from = 0.0
 time_to = 6.0
 weather = clear
-env_section = clear_day
+env_section = clear_morning
 
 [rain_cycle]
 cycles = rain_day, rain_evening, rain_night, rain_morning
@@ -41,7 +42,7 @@ env_section = rain_day
 time_from = 12.0
 time_to = 18.0
 weather = rain
-env_section = rain_day
+env_section = rain_evening
 
 [rain_night]
 time_from = 18.0
@@ -53,9 +54,19 @@ env_section = rain_night
 time_from = 0.0
 time_to = 6.0
 weather = rain
-env_section = rain_day
+env_section = rain_morning
 
-; Примечание:
-; - Динамическая смена погоды реализуется через Lua-скрипт weather_manager.script
-; - Объемный туман (volumetric fog) и God Rays настраиваются в render.ltx и шейдерах
-; - Для сезонных изменений используйте модификаторы в Lua-скрипте
+[storm_cycle]
+cycles = storm_day, storm_night
+
+[storm_day]
+time_from = 6.0
+time_to = 18.0
+weather = storm
+env_section = storm_day
+
+[storm_night]
+time_from = 18.0
+time_to = 24.0
+weather = storm
+env_section = storm_night

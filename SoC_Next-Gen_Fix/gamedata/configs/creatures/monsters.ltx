@@ -1,6 +1,15 @@
 ; SoC Next-Gen Fix - Монстры (monsters.ltx)
 ; Только реальные параметры X-Ray движка
-; Изменение статов через Lua-скрипт optimization.script
+; Изменение статов через Lua-скрипт optimization.script при спавне
+
+[monster_base]
+health = 100
+damage = 20
+attack_speed = 1.0
+sight_range = 30
+smell_range = 15
+step_potential = 5
+max_health = 100
 
 [zombie]
 monster_base = monster_base
@@ -51,7 +60,6 @@ sight_range = 25
 smell_range = 10
 step_potential = 3
 max_health = 150
-telekinesis_range = 10
 
 [controller]
 monster_base = monster_base
@@ -62,7 +70,6 @@ sight_range = 35
 smell_range = 10
 step_potential = 2
 max_health = 200
-psy_range = 20
 
 [snork]
 monster_base = monster_base
@@ -83,7 +90,6 @@ sight_range = 30
 smell_range = 18
 step_potential = 6
 max_health = 180
-invisibility_duration = 10
 
 [chimera]
 monster_base = monster_base
@@ -174,10 +180,3 @@ sight_range = 25
 smell_range = 8
 step_potential = 2
 max_health = 120
-telekinesis_range = 15
-
-; Примечание:
-; - health_multiplier, damage_multiplier и другие кастомные параметры
-;   реализуются через Lua-скрипт optimization.script при спавне
-; - LOD настраивается в render.ltx (r__vis_distance, r__detail_radius)
-; - Спавн монстров управляется через sim_squad_*.script и smart_terrain.ltx

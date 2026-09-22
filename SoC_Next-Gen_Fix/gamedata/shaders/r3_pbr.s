@@ -1,74 +1,70 @@
 ;; SoC Next-Gen Fix - Базовый шейдер для X-Ray R3 рендера
-;; Это пример структуры .s файла для X-Ray движка
-;; Для полноценного PBR требуется модификация r3_base.s и r3_pbr.s
+;; Формат: .s файл для компиляции через fxc.exe из X-Ray SDK
+;; Совместимо с Shader Model 2.0/3.0
 
 ;; ============================================================================
-;; Вершинный шейдер (Vertex Shader)
+;; Вершинный шейдер (Vertex Shader) - SM 2.0
 ;; ============================================================================
 
 vs_2_0
 {
-    ;; Входные данные
-    dcl_position v0
-    dcl_normal v1
-    dcl_texcoord v2
-    dcl_color v3
+    ;; Входные данные (декларации)
+    dcl_position v0      ;; Позиция вершины
+    dcl_normal v1        ;; Нормаль
+    dcl_texcoord v2      ;; UV координаты
+    dcl_color v3         ;; Цвет вершины
     
-    ;; Константы
-    def c0, 1.0, 1.0, 1.0, 1.0
+    ;; Константы (cMatrixPosition, cMatrixTexgen, cMatrixNormal предоставляются движком)
     
-    ;; Трансформация позиции
+    ;; Трансформация позиции в clip space
     m4x4 oPos.xxyz, v0, cMatrixPosition
+    
+    ;; Генерация текстурных координат для проективных текстур
     m4x4 oT0.xyzz, v0, cMatrixTexgen
     
-    ;; Нормаль в мировое пространство
+    ;; Трансформация нормали в world space
     m3x3 oT1.xyz, v1, cMatrixNormal
     
-    ;; UV координаты
+    ;; Передача UV координат
     mov oT2.xy, v2
     
-    ;; Цвет вершины
+    ;; Передача цвета вершины
     mov oD0, v3
 }
 
 ;; ============================================================================
-;; Пиксельный шейдер (Pixel Shader) - Упрощенный PBR
+;; Пиксельный шейдер (Pixel Shader) - Упрощенное освещение SM 2.0
 ;; ============================================================================
 
 ps_2_0
 {
-    ;; Текстуры
-    dcl_2d s0  ;; Albedo/Diffuse
-    dcl_2d s1  ;; Normal map
-    dcl_2d s2  ;; Specular/Gloss
+    ;; Декларация текстурных семплеров
+    dcl_2d s0  ;; Base color / Albedo
+    dcl_2d s1  ;; Normal map (опционально)
     
-    ;; Входные данные
-    dcl t0.xy
-    dcl t1.xyz
-    dcl t2.xy
-    dcl v0.xyz
+    ;; Входные интерполированные данные
+    dcl t0.xy      ;; Projective UV
+    dcl t1.xyz     ;; Normal (world space)
+    dcl t2.xy      ;; Base UV
+    dcl v0.xyz     ;; Color
     
-    ;; Sampling текстур
-    texld r0, t0, s0  ;; Albedo
-    texld r1, t1, s1  ;; Normal
-    texld r2, t2, s2  ;; Specular
+    ;; Сэмплинг базовой текстуры
+    texld r0, t2, s0
     
-    ;; Простое освещение (Lambert)
-    dp3 r3.x, t1, cLightDirection
-    max r3.x, r3.x, 0.0
+    ;; Простое диффузное освещение (Lambert)
+    ;; cLightDirection предоставляется движком
+    dp3_sat r1.x, t1, cLightDirection
+    mad r2.xyz, r0, r1.x, r0
     
-    ;; Модуляция с альбедо
-    mul r4.xyz, r0, r3.x
+    ;; Добавляем ambient компонент (предоставляется движком)
+    mad r3.xyz, r2, cAmbientColor, r2
     
-    ;; Добавляем ambient
-    mad r5.xyz, r4, cAmbientColor, r4
-    
-    ;; Вывод цвета
-    mov oC0, r5
+    ;; Вывод финального цвета
+    mov oC0, r3
 }
 
 ;; ============================================================================
-;; Техники (Techniques)
+;; Техники (Techniques) - определяют состояния рендера
 ;; ============================================================================
 
 technique T0
@@ -83,33 +79,41 @@ technique T0
         ZWriteEnable = true
         ZEnable = true
         CullMode = CCW
+        Lighting = true
     }
 }
 
 ;; ============================================================================
-;; Примечания по реализации PBR для X-Ray
+;; Примечания для разработчиков мода:
 ;; ============================================================================
 ;; 
-;; Для полноценного PBR (Physically Based Rendering) в X-Ray нужно:
+;; Для полноценного PBR в X-Ray требуется:
 ;; 
-;; 1. Модифицировать r3_base.s для поддержки G-Buffer:
-;;    - Albedo (цвет без освещения)
-;;    - Normals (нормали в world space)
-;;    - Depth (глубина)
-;;    - Specular/Gloss (блики/шероховатость)
+;; 1. Модификация r3_base.s из SDK для G-Buffer рендеринга:
+;;    - Albedo buffer (цвет без освещения)
+;;    - Normal buffer (нормали в world space)  
+;;    - Depth buffer (глубина сцены)
+;;    - Specular buffer (параметры бликов)
 ;; 
-;; 2. Реализовать GGX/Trowbridge-Reitz microfacet distribution
-;;    для расчета бликов
+;; 2. Реализация microfacet модели (GGX/Trowbridge-Reitz):
+;;    - NDF (Normal Distribution Function)
+;;    - Geometry function (shadowing-masking)
+;;    - Fresnel term (Schlick approximation)
 ;; 
-;; 3. Добавить Fresnel уравнения (Schlick approximation)
+;; 3. Интеграция с системой освещения X-Ray:
+;;    - Direct lighting (солнце, источники света)
+;;    - Indirect lighting (GI, отраженный свет)
+;;    - Ambient occlusion (SSAO/HBAO)
 ;; 
-;; 4. Модифицировать lighting shader для корректного расчета
+;; 4. Post-process эффекты в отдельном файле r3_postprocess.s:
+;;    - Tone mapping (Reinhard/ACES)
+;;    - Bloom (свечение ярких участков)
+;;    - God Rays (объемные лучи света)
+;;    - Color grading (коррекция цвета)
 ;; 
-;; 5. Для God Rays использовать volumetric ray marching в post-process
-;; 
-;; Рекомендуется взять за основу файлы из SDK X-Ray или мода Anomaly:
-;; - r3_base.s
-;; - r3_pbr.s  
-;; - r3_postprocess.s
+;; Рекомендуется использовать готовые реализации из:
+;; - X-Ray SDK примеры
+;; - Мода Anomaly (открытые шейдеры)
+;; - OpenXRay/OGSR Engine
 ;; 
 ;; ============================================================================

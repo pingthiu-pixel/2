@@ -1,0 +1,85 @@
+; SoC Next-Gen Fix - Погода: Ясно (Clear)
+; Стандартная структура для X-Ray движка
+; Секции: [sky], [sun], [fog], [clouds], [rain]
+
+[clear_day]
+type = clear
+
+[sky]
+sky_color = 0.5, 0.7, 0.9
+sky_gradient = 0.3, 0.5, 0.8
+sky_rotation = 0.0
+
+[sun]
+sun_color = 1.0, 0.95, 0.8
+sun_intensity = 1.0
+sun_shadow = 1.0
+
+[fog]
+fog_color = 0.6, 0.7, 0.8
+fog_density = 0.001
+fog_distance = 150
+
+[clouds]
+clouds_texture = ui\ui_noise_01
+clouds_speed = 0.02
+clouds_scale = 1.5
+
+[rain]
+rain_density = 0
+rain_color = 0.5, 0.5, 0.6
+wind_velocity = 2
+wind_direction = 0.0
+
+[clear_evening]
+type = clear
+
+[sky:clear_evening]
+sky_color = 0.7, 0.5, 0.4
+sky_gradient = 0.5, 0.3, 0.2
+
+[sun:clear_evening]
+sun_color = 1.0, 0.6, 0.3
+sun_intensity = 0.5
+
+[fog:clear_evening]
+fog_color = 0.7, 0.5, 0.4
+fog_density = 0.002
+
+[clear_night]
+type = clear
+
+[sky:clear_night]
+sky_color = 0.05, 0.05, 0.15
+sky_gradient = 0.02, 0.03, 0.1
+
+[sun:clear_night]
+sun_color = 0.3, 0.3, 0.4
+sun_intensity = 0.0
+
+[fog:clear_night]
+fog_color = 0.1, 0.1, 0.2
+fog_density = 0.0008
+
+[clouds:clear_night]
+clouds_texture = ui\ui_noise_01
+clouds_speed = 0.01
+
+[rain:clear_night]
+rain_density = 0
+wind_velocity = 1
+
+[clear_morning]
+type = clear
+
+[sky:clear_morning]
+sky_color = 0.6, 0.7, 0.9
+sky_gradient = 0.4, 0.5, 0.7
+
+[sun:clear_morning]
+sun_color = 1.0, 0.9, 0.7
+sun_intensity = 0.7
+
+[fog:clear_morning]
+fog_color = 0.6, 0.7, 0.9
+fog_density = 0.0015
