@@ -1,0 +1,52 @@
+; SoC Next-Gen Fix - Render Settings
+; Совместимо с оригинальным X-Ray движком и OGSR/OpenXRay
+; Формат значений: on/off или 1/0
+
+[render]
+; Детализация растительности (0.0 - 1.0)
+r__detail_density = 0.7
+
+; Дистанция прорисовки травы
+r__detail_radius = 50
+
+; Качество теней (0 - off, 1 - low, 2 - medium, 3 - high)
+r2_sun = 1
+r2_sun_depth = 1
+r2_sun_quality = 1
+
+; Мягкие тени (требует R2+)
+r2_soft_water = on
+r2_soft_particles = on
+
+; Динамические эффекты погоды
+r3_dyn_snow = on
+r3_dyn_rain = on
+
+; Отключение тяжелых пост-эффектов для производительности
+; Включайте только на мощных ПК
+r__supersample = 1
+r__gbump = 1
+
+; Расстояние видимости объектов (LOD)
+r__vis_distance = 1.0
+
+; Качество воды
+r2_water_reflections = 1
+r2_water_normals = 1
+
+; Партиклы и эффекты
+r__dtex_range = 50
+
+; Wallmarks (следы от пуль, крови) - ограничиваем для оптимизации
+r__wallmark_ttl = 60
+
+; Для R3/R4 рендера
+r3_vsync = off
+r3_msaa = off
+r3_ssao = on
+r3_gi = off
+
+; Примечание:
+; - Параметры multithreading, texture_cache включаются через патчи движка (OGSR/OpenXRay)
+; - Для переключения между пресетами используйте отдельные файлы:
+;   render_low.ltx, render_medium.ltx, render_high.ltx, render_ultra.ltx
