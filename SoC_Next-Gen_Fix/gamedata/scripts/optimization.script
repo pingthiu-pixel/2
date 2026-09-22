@@ -1,0 +1,304 @@
+--===========================================================================
+-- SoC Next-Gen Fix - Optimization Script
+-- Скрипты для оптимизации производительности и стабильности
+--===========================================================================
+
+------------------------------------------------------------------------------
+-- Инициализация оптимизации
+------------------------------------------------------------------------------
+
+local optimization = {}
+
+-- Настройки оптимизации
+optimization.settings = {
+    -- Очистка памяти
+    memory_cleanup_interval = 300,  -- Интервал очистки (секунды)
+    max_texture_memory = 2048,       -- Максимум памяти для текстур (MB)
+    
+    -- Оптимизация объектов
+    lod_distance_multiplier = 1.2,   -- Множитель дистанции LOD
+    object_deactivation_distance = 150, -- Дистанция деактивации объектов
+    
+    -- Оптимизация AI
+    ai_update_distance = 50,         -- Дистанция обновления AI
+    ai_throttle_enabled = true,      -- Ограничение обновлений AI
+    
+    -- Оптимизация частиц
+    max_particles = 500,             -- Максимум частиц
+    particle_cleanup_distance = 100, -- Дистанция очистки частиц
+}
+
+------------------------------------------------------------------------------
+-- Менеджер памяти
+------------------------------------------------------------------------------
+
+optimization.memory_manager = {
+    last_cleanup_time = 0,
+    cleanup_count = 0,
+}
+
+function optimization.memory_manager:cleanup()
+    -- Принудительный сборщик мусора Lua
+    collectgarbage("collect")
+    
+    -- Очистка кэша текстур (если поддерживается движком)
+    if db.storage then
+        -- Очистка неиспользуемых ресурсов
+        for k, v in pairs(db.storage) do
+            if v and type(v) == "table" and v.release then
+                -- Освобождение ресурсов
+                -- v:release()  -- Раскомментировать при необходимости
+            end
+        end
+    end
+    
+    self.cleanup_count = self.cleanup_count + 1
+    self.last_cleanup_time = time_global()
+    
+    xrLog("[SoC Next-Gen] Memory cleanup performed #" .. self.cleanup_count)
+end
+
+function optimization.memory_manager:update()
+    -- Проверка необходимости очистки
+    local current_time = time_global()
+    local elapsed = (current_time - self.last_cleanup_time) / 1000  -- в секундах
+    
+    if elapsed >= optimization.settings.memory_cleanup_interval then
+        self:cleanup()
+    end
+end
+
+------------------------------------------------------------------------------
+-- Менеджер объектов
+------------------------------------------------------------------------------
+
+optimization.object_manager = {
+    deactivated_objects = {},
+}
+
+function optimization.object_manager:optimize_objects()
+    local player_pos = db.actor:cform():center()
+    
+    -- Деактивация далеких объектов
+    for _, obj in ipairs(level.objects()) do
+        if obj and valid_object(obj) then
+            local obj_pos = obj:cform():center()
+            local distance = get_dist_between(player_pos, obj_pos)
+            
+            -- Деактивация объектов вне зоны видимости
+            if distance > optimization.settings.object_deactivation_distance then
+                if not obj:disabled() then
+                    -- obj:disable()  -- Раскомментировать при необходимости
+                    self.deactivated_objects[obj:id()] = true
+                end
+            else
+                -- Реактивация объектов при приближении
+                if self.deactivated_objects[obj:id()] then
+                    -- obj:enable()  -- Раскомментировать при необходимости
+                    self.deactivated_objects[obj:id()] = nil
+                end
+            end
+        end
+    end
+end
+
+------------------------------------------------------------------------------
+-- Менеджер AI
+------------------------------------------------------------------------------
+
+optimization.ai_manager = {
+    throttled_actors = {},
+}
+
+function optimization.ai_manager:throttle_ai()
+    if not optimization.settings.ai_throttle_enabled then
+        return
+    end
+    
+    local player_pos = db.actor:cform():center()
+    
+    -- Ограничение обновлений AI для далеких NPC
+    for _, npc in ipairs(all_objects()) do
+        if npc and valid_object(npc) and npc:character_community() then
+            local npc_pos = npc:cform():center()
+            local distance = get_dist_between(player_pos, npc_pos)
+            
+            if distance > optimization.settings.ai_update_distance then
+                -- Приостановка AI логики для далеких NPC
+                -- npc:set_script_visibility(false)  -- Пример
+                self.throttled_actors[npc:id()] = true
+            else
+                -- Возобновление AI логики
+                if self.throttled_actors[npc:id()] then
+                    -- npc:set_script_visibility(true)  -- Пример
+                    self.throttled_actors[npc:id()] = nil
+                end
+            end
+        end
+    end
+end
+
+------------------------------------------------------------------------------
+-- Менеджер частиц
+------------------------------------------------------------------------------
+
+optimization.particle_manager = {
+    active_particles = {},
+}
+
+function optimization.particle_manager:cleanup_particles()
+    local player_pos = db.actor:cform():center()
+    local count = 0
+    
+    -- Очистка старых частиц
+    for id, particle_data in pairs(self.active_particles) do
+        if particle_data then
+            local particle_pos = particle_data.position
+            local distance = get_dist_between(player_pos, particle_pos)
+            local age = time_global() - particle_data.spawn_time
+            
+            -- Удаление старых или далеких частиц
+            if age > 10000 or distance > optimization.settings.particle_cleanup_distance then
+                -- particle_data.system:stop()  -- Пример остановки
+                self.active_particles[id] = nil
+                count = count + 1
+            end
+        end
+    end
+    
+    if count > 0 then
+        xrLog("[SoC Next-Gen] Cleaned up " .. count .. " old particles")
+    end
+end
+
+------------------------------------------------------------------------------
+-- Менеджер сохранений (фикс вылетов)
+------------------------------------------------------------------------------
+
+optimization.save_manager = {
+    is_saving = false,
+    save_queue = {},
+}
+
+function optimization.save_manager:safe_save(slot)
+    -- Предотвращение множественных сохранений
+    if self.is_saving then
+        xrLog("[SoC Next-Gen] Save already in progress, queued")
+        table.insert(self.save_queue, slot)
+        return false
+    end
+    
+    self.is_saving = true
+    
+    -- Очистка временных данных перед сохранением
+    collectgarbage("collect")
+    
+    -- Попытка сохранения с обработкой ошибок
+    local success, result = pcall(function()
+        -- Оригинальная функция сохранения
+        game.save(slot)
+    end)
+    
+    self.is_saving = false
+    
+    if not success then
+        xrLog("[SoC Next-Gen] Save failed: " .. tostring(result))
+        -- Обработка очереди сохранений
+        if #self.save_queue > 0 then
+            local next_slot = table.remove(self.save_queue, 1)
+            self:safe_save(next_slot)
+        end
+        return false
+    end
+    
+    xrLog("[SoC Next-Gen] Save successful: slot " .. slot)
+    return true
+end
+
+------------------------------------------------------------------------------
+-- Менеджер загрузки
+------------------------------------------------------------------------------
+
+optimization.load_manager = {
+    preload_cache = {},
+}
+
+function optimization.load_manager:preload_critical_resources()
+    -- Предзагрузка критических текстур и моделей
+    local critical_textures = {
+        "wpn_ak74",
+        "wpn_pm",
+        "actor_face",
+        "ui_main_menu",
+    }
+    
+    for _, texture_name in ipairs(critical_textures) do
+        -- texture_load(texture_name)  -- Пример предзагрузки
+        self.preload_cache[texture_name] = true
+    end
+    
+    xrLog("[SoC Next-Gen] Preloaded " .. #critical_textures .. " critical textures")
+end
+
+------------------------------------------------------------------------------
+-- Система логирования
+------------------------------------------------------------------------------
+
+optimization.logger = {
+    log_file = "soc_nextgen_optimization.log",
+    log_enabled = true,
+}
+
+function optimization.logger:log(message, level)
+    if not self.log_enabled then
+        return
+    end
+    
+    level = level or "INFO"
+    local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+    local log_message = string.format("[%s] [%s] %s", timestamp, level, message)
+    
+    xrLog("[SoC Next-Gen] " .. log_message)
+end
+
+------------------------------------------------------------------------------
+-- Главный цикл обновления
+------------------------------------------------------------------------------
+
+function optimization.update()
+    -- Обновление менеджера памяти
+    optimization.memory_manager:update()
+    
+    -- Оптимизация объектов (реже, для производительности)
+    if db.frame % 60 == 0 then  -- Каждую секунду (при 60 FPS)
+        optimization.object_manager:optimize_objects()
+        optimization.ai_manager:throttle_ai()
+        optimization.particle_manager:cleanup_particles()
+    end
+end
+
+------------------------------------------------------------------------------
+-- Инициализация
+------------------------------------------------------------------------------
+
+function optimization.init()
+    xrLog("[SoC Next-Gen Fix] Optimization module initialized")
+    xrLog("[SoC Next-Gen Fix] Memory cleanup interval: " .. optimization.settings.memory_cleanup_interval .. "s")
+    xrLog("[SoC Next-Gen Fix] LOD distance multiplier: " .. optimization.settings.lod_distance_multiplier)
+    xrLog("[SoC Next-Gen Fix] AI throttle: " .. tostring(optimization.settings.ai_throttle_enabled))
+    
+    -- Предзагрузка ресурсов
+    optimization.load_manager:preload_critical_resources()
+    
+    -- Регистрация коллбэка обновления
+    if register_callback then
+        register_callback("game_frame", optimization.update)
+    end
+end
+
+-- Запуск при загрузке скрипта
+optimization.init()
+
+--===========================================================================
+-- Конец скрипта оптимизации
+--===========================================================================

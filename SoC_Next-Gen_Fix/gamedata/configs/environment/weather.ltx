@@ -1,0 +1,288 @@
+;===========================================================================
+; SoC Next-Gen Fix - Weather Configuration
+; Реалистичная погода и атмосфера
+;===========================================================================
+
+[weather]
+;----------------------------------------------------------------------------
+; Общие настройки погоды
+;----------------------------------------------------------------------------
+
+; Длительность игрового дня (минуты реального времени)
+day_duration              60
+
+; Длительность ночи (процент от дня)
+night_duration            0.4
+
+; Скорость изменения погоды (0.1 - 2.0)
+weather_change_speed      0.5
+
+;----------------------------------------------------------------------------
+; Объемный туман
+;----------------------------------------------------------------------------
+
+; Включение объемного тумана
+volumetric_fog            TRUE
+
+; Плотность тумана (0.0 - 1.0)
+fog_density               0.35
+
+; Дистанция начала тумана (метры)
+fog_start_distance        50
+
+; Максимальная дистанция тумана (метры)
+fog_end_distance          300
+
+; Цвет тумана (день)
+fog_color_day_r           0.75
+fog_color_day_g           0.80
+fog_color_day_b           0.85
+
+; Цвет тумана (ночь)
+fog_color_night_r         0.15
+fog_color_night_g         0.18
+fog_color_night_b         0.25
+
+; Цвет тумана (рассвет/закат)
+fog_color_dawn_r          0.90
+fog_color_dawn_g          0.65
+fog_color_dawn_b          0.50
+
+;----------------------------------------------------------------------------
+; Облака
+;----------------------------------------------------------------------------
+
+; Динамические облака (TRUE = движущиеся, FALSE = статичные)
+dynamic_clouds            TRUE
+
+; Плотность облаков (0.0 - 1.0)
+cloud_density             0.5
+
+; Скорость движения облаков
+cloud_speed               0.3
+
+; Высота слоя облаков
+cloud_height              2000
+
+; Количество слоев облаков
+cloud_layers              3
+
+; Цвет облаков (день)
+cloud_color_day_r         1.0
+cloud_color_day_g         1.0
+cloud_color_day_b         1.0
+
+; Цвет облаков (рассвет/закат)
+cloud_color_dawn_r        1.0
+cloud_color_dawn_g        0.75
+cloud_color_dawn_b        0.60
+
+;----------------------------------------------------------------------------
+; Освещение
+;----------------------------------------------------------------------------
+
+; Интенсивность солнечного света (0.0 - 2.0)
+sun_intensity             1.2
+
+; Цвет солнца (день)
+sun_color_day_r           1.0
+sun_color_day_g           0.98
+sun_color_day_b           0.95
+
+; Цвет солнца (рассвет/закат)
+sun_color_dawn_r          1.0
+sun_color_dawn_g          0.65
+sun_color_dawn_b          0.40
+
+; God Rays (лучи света)
+godrays_enabled           TRUE
+godrays_intensity         0.7
+godrays_quality           2
+
+;----------------------------------------------------------------------------
+; Дождь и осадки
+;----------------------------------------------------------------------------
+
+; Интенсивность дождя (0.0 - 1.0)
+rain_intensity            0.6
+
+; Капли на экране
+rain_drops_on_screen      TRUE
+
+; Мокрый асфальт и поверхности
+wet_surfaces              TRUE
+
+; Отражения в лужах
+puddle_reflections        TRUE
+
+; Гром и молнии
+thstorm_enabled           TRUE
+thunder_probability       0.3
+lightning_probability     0.4
+
+;----------------------------------------------------------------------------
+; Ветер
+;----------------------------------------------------------------------------
+
+; Сила ветра (0.0 - 10.0)
+wind_strength             3.5
+
+; Направление ветра (градусы)
+wind_direction            180
+
+; Порывы ветра (вкл/выкл)
+wind_gusts                TRUE
+
+; Частота порывов (секунды)
+wind_gust_interval        5.0
+
+;----------------------------------------------------------------------------
+; Типы погоды
+;----------------------------------------------------------------------------
+
+[weather_clear]
+; Ясная погода
+fog_density               0.25
+cloud_density             0.2
+sun_intensity             1.3
+rain_intensity            0.0
+visibility                1.0
+
+[weather_partly_cloudy]
+; Переменная облачность
+fog_density               0.30
+cloud_density             0.4
+sun_intensity             1.1
+rain_intensity            0.0
+visibility                0.9
+
+[weather_cloudy]
+; Пасмурно
+fog_density               0.40
+cloud_density             0.7
+sun_intensity             0.8
+rain_intensity            0.1
+visibility                0.7
+
+[weather_rain]
+; Дождь
+fog_density               0.50
+cloud_density             0.9
+sun_intensity             0.5
+rain_intensity            0.8
+visibility                0.5
+
+[weather_storm]
+; Гроза
+fog_density               0.60
+cloud_density             1.0
+sun_intensity             0.3
+rain_intensity            1.0
+visibility                0.4
+thunder_probability       0.8
+lightning_probability     0.9
+
+[weather_foggy]
+; Туман
+fog_density               0.80
+cloud_density             0.5
+sun_intensity             0.6
+rain_intensity            0.0
+visibility                0.3
+
+[weather_night_clear]
+; Ясная ночь
+fog_density               0.30
+cloud_density             0.2
+sun_intensity             0.0
+moon_intensity            0.8
+visibility                0.8
+
+[weather_night_cloudy]
+; Облачная ночь
+fog_density               0.40
+cloud_density             0.6
+sun_intensity             0.0
+moon_intensity            0.4
+visibility                0.6
+
+;----------------------------------------------------------------------------
+; Сезонные вариации
+;----------------------------------------------------------------------------
+
+[season_spring]
+; Весна
+fog_density_base          0.35
+rain_probability          0.4
+wind_strength             4.0
+temperature               15
+
+[season_summer]
+; Лето
+fog_density_base          0.25
+rain_probability          0.2
+wind_strength             2.5
+temperature               25
+
+[season_autumn]
+; Осень
+fog_density_base          0.45
+rain_probability          0.5
+wind_strength             5.0
+temperature               10
+
+[season_winter]
+; Зима
+fog_density_base          0.50
+rain_probability          0.1
+snow_probability          0.6
+wind_strength             6.0
+temperature               -5
+
+;----------------------------------------------------------------------------
+; Времена суток
+;----------------------------------------------------------------------------
+
+[time_night]
+; Ночь (00:00 - 05:00)
+ambient_brightness        0.15
+sun_visibility            0
+moon_visibility           1
+stars_visibility          0.8
+artificial_light_mult     1.5
+
+[time_dawn]
+; Рассвет (05:00 - 07:00)
+ambient_brightness        0.40
+sun_visibility            0.5
+moon_visibility           0.5
+stars_visibility          0.2
+artificial_light_mult     1.2
+
+[time_day]
+; День (07:00 - 18:00)
+ambient_brightness        1.0
+sun_visibility            1
+moon_visibility           0
+stars_visibility          0
+artificial_light_mult     0.8
+
+[time_dusk]
+; Закат (18:00 - 20:00)
+ambient_brightness        0.50
+sun_visibility            0.5
+moon_visibility           0.3
+stars_visibility          0.1
+artificial_light_mult     1.0
+
+[time_evening]
+; Вечер (20:00 - 00:00)
+ambient_brightness        0.25
+sun_visibility            0
+moon_visibility           0.8
+stars_visibility          0.6
+artificial_light_mult     1.3
+
+;===========================================================================
+; Конец конфигурации погоды
+;===========================================================================

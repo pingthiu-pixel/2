@@ -1,0 +1,271 @@
+;===========================================================================
+; SoC Next-Gen Fix - Monsters Configuration
+; Оптимизация и баланс существ/монстров
+;===========================================================================
+
+[monsters_general]
+;----------------------------------------------------------------------------
+; Общие настройки монстров
+;----------------------------------------------------------------------------
+
+; Дистанция активации AI (метры)
+ai_activation_distance        50
+
+; Максимальное количество активных монстров на локации
+max_active_monsters           20
+
+; Частота обновления AI (кадры)
+ai_update_frequency           10
+
+; Оптимизация дальних монстров
+distant_monster_throttle      TRUE
+
+;----------------------------------------------------------------------------
+; Настройки для разных типов монстров
+;----------------------------------------------------------------------------
+
+[zombie]
+; Зомби
+health_multiplier             1.0
+damage_multiplier             0.9
+ai_sense_range                30
+movement_speed                0.8
+lod_distance                  40
+texture_quality               high
+
+[zombie_strong]
+; Сильный зомби
+health_multiplier             1.5
+damage_multiplier             1.1
+ai_sense_range                35
+movement_speed                0.7
+lod_distance                  45
+texture_quality               high
+
+[zombie_geist]
+; Гейст
+health_multiplier             0.8
+damage_multiplier             1.2
+ai_sense_range                40
+movement_speed                1.1
+lod_distance                  35
+special_effect                invisibility
+
+[pseudodog]
+; Псевдособака
+health_multiplier             1.0
+damage_multiplier             1.0
+ai_sense_range                35
+movement_speed                1.3
+lod_distance                  45
+pack_behavior                 TRUE
+
+[pseudogiant]
+; Псевдогигант
+health_multiplier             2.0
+damage_multiplier             1.5
+ai_sense_range                50
+movement_speed                0.6
+lod_distance                  60
+stomp_damage_radius           5
+
+[burer]
+; Бюрер
+health_multiplier             1.3
+damage_multiplier             1.1
+ai_sense_range                40
+movement_speed                0.7
+lod_distance                  45
+telekinesis_range             20
+
+[controller]
+; Контролер
+health_multiplier             1.2
+damage_multiplier             1.0
+ai_sense_range                45
+movement_speed                0.8
+lod_distance                  50
+hypnosis_range                15
+psy_damage_per_second         5
+
+[snork]
+; Снорк
+health_multiplier             1.1
+damage_multiplier             1.2
+ai_sense_range                35
+movement_speed                1.2
+lod_distance                  40
+jump_attack_chance            0.3
+
+[blind_dog]
+; Слепая собака
+health_multiplier             0.9
+damage_multiplier             0.9
+ai_sense_range                25
+movement_speed                1.4
+lod_distance                  35
+sound_sensitivity             high
+
+[flesh]
+; Плоть
+health_multiplier             1.4
+damage_multiplier             1.0
+ai_sense_range                30
+movement_speed                0.9
+lod_distance                  45
+charge_attack                 TRUE
+
+[boar]
+; Кабан
+health_multiplier             1.3
+damage_multiplier             1.1
+ai_sense_range                25
+movement_speed                1.0
+lod_distance                  40
+aggression_level              medium
+
+[wolf]
+; Волк
+health_multiplier             1.0
+damage_multiplier             0.9
+ai_sense_range                30
+movement_speed                1.2
+lod_distance                  40
+pack_hunting                  TRUE
+
+[chimera]
+; Химера
+health_multiplier             1.8
+damage_multiplier             1.4
+ai_sense_range                40
+movement_speed                1.1
+lod_distance                  55
+invisibility_duration         5
+
+[cat]
+; Кот
+health_multiplier             0.7
+damage_multiplier             0.8
+ai_sense_range                20
+movement_speed                1.5
+lod_distance                  30
+stealth_mode                  TRUE
+
+[tushkano]
+; Тушкан
+health_multiplier             0.5
+damage_multiplier             0.6
+ai_sense_range                20
+movement_speed                1.6
+lod_distance                  25
+group_size_max                8
+
+[kikimora]
+; Кикимора
+health_multiplier             0.8
+damage_multiplier             0.9
+ai_sense_range                25
+movement_speed                1.0
+lod_distance                  35
+swamp_camouflage              TRUE
+
+[poltergeist]
+; Полтергейст
+health_multiplier             1.0
+damage_multiplier             1.1
+ai_sense_range                35
+movement_speed                0.9
+lod_distance                  40
+telekinetic_throw             TRUE
+
+[piranha]
+; Пиранья
+health_multiplier             0.6
+damage_multiplier             1.0
+ai_sense_range                15
+movement_speed                1.3
+lod_distance                  25
+water_only                    TRUE
+
+[bloodsucker]
+; Кровосос
+health_multiplier             1.5
+damage_multiplier             1.3
+ai_sense_range                35
+movement_speed                1.0
+lod_distance                  45
+invisibility_enabled          TRUE
+vampire_drain_rate            10
+
+;----------------------------------------------------------------------------
+; Настройки спавна монстров
+;----------------------------------------------------------------------------
+
+[spawn_rules]
+; Минимальная дистанция спавна от игрока (метры)
+min_spawn_distance            30
+
+; Максимальная дистанция спавна от игрока (метры)
+max_spawn_distance            150
+
+; Задержка между спавнами (секунды)
+spawn_delay                   10
+
+; Максимум монстров одного типа одновременно
+max_per_type                  5
+
+;----------------------------------------------------------------------------
+; Оптимизация производительности
+;----------------------------------------------------------------------------
+
+[performance]
+; Упрощенная физика для дальних монстров
+distant_physics_simplify      TRUE
+
+; Отключение частиц у далеких монстров
+distant_particles_disable     TRUE
+
+; LOD переключение на основе дистанции
+lod_switch_distances          20, 40, 60, 80
+
+; Частота обновления анимаций (кадры)
+animation_update_frequency    5
+
+; Максимальное количество звуков монстров одновременно
+max_simultaneous_sounds       10
+
+;----------------------------------------------------------------------------
+; Баланс сложности
+;----------------------------------------------------------------------------
+
+[easy]
+; Легкая сложность
+monster_health_mult           0.7
+monster_damage_mult           0.6
+monster_accuracy_mult         0.5
+monster_detection_range       0.8
+
+[normal]
+; Нормальная сложность
+monster_health_mult           1.0
+monster_damage_mult           1.0
+monster_accuracy_mult         1.0
+monster_detection_range       1.0
+
+[hard]
+; Сложная сложность
+monster_health_mult           1.3
+monster_damage_mult           1.4
+monster_accuracy_mult         1.3
+monster_detection_range       1.2
+
+[nightmare]
+; Кошмар
+monster_health_mult           1.6
+monster_damage_mult           1.8
+monster_accuracy_mult         1.5
+monster_detection_range       1.4
+
+;===========================================================================
+; Конец конфигурации монстров
+;===========================================================================
