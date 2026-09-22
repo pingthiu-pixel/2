@@ -1,0 +1,67 @@
+; SoC Next-Gen Fix - Погода: Шторм (Storm)
+; Стандартная структура для X-Ray движка
+; Секции: [sky], [sun], [fog], [clouds], [rain]
+
+[storm_day]
+type = storm
+
+[sky]
+sky_color = 0.2, 0.2, 0.25
+sky_gradient = 0.1, 0.1, 0.15
+sky_rotation = 0.0
+
+[sun]
+sun_color = 0.4, 0.4, 0.5
+sun_intensity = 0.1
+sun_shadow = 0.0
+
+[fog]
+fog_color = 0.3, 0.3, 0.35
+fog_density = 0.008
+fog_distance = 50
+
+[clouds]
+clouds_texture = ui\ui_noise_03
+clouds_speed = 0.1
+clouds_scale = 3.0
+clouds_density = 1.0
+
+[rain]
+rain_density = 1.0
+rain_color = 0.4, 0.4, 0.5
+rain_speed = 1.5
+wind_velocity = 10
+wind_direction = 1.0
+
+[lightning]
+lightning_probability = 0.3
+lightning_color = 0.8, 0.8, 1.0
+lightning_duration = 0.2
+
+[storm_night]
+type = storm
+
+[sky:storm_night]
+sky_color = 0.05, 0.05, 0.08
+sky_gradient = 0.02, 0.02, 0.05
+
+[sun:storm_night]
+sun_color = 0.1, 0.1, 0.15
+sun_intensity = 0.0
+
+[fog:storm_night]
+fog_color = 0.1, 0.1, 0.15
+fog_density = 0.006
+
+[clouds:storm_night]
+clouds_texture = ui\ui_noise_03
+clouds_speed = 0.08
+clouds_density = 0.9
+
+[rain:storm_night]
+rain_density = 0.9
+wind_velocity = 8
+
+[lightning:storm_night]
+lightning_probability = 0.4
+lightning_color = 0.9, 0.9, 1.0

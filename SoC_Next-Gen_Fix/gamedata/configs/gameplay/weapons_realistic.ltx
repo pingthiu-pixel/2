@@ -1,0 +1,657 @@
+; =========================================================
+; SoC Next-Gen Fix: Реалистичная Перезарядка Оружия
+; =========================================================
+; Этот файл переопределяет параметры оружия из game_ltx\weapons.ltx
+; Добавляет разделение на тактическую (не пустой магазин) и полную перезарядку.
+; =========================================================
+
+[wpn_pm]:weapon_base
+class                   = WP_PM
+slot                    = 2
+animation_slot          = 2
+inv_name                = st_wpn_pm
+inv_name_short          = st_wpn_pm
+inv_grid_width          = 2
+inv_grid_height         = 1
+inv_grid_x              = 0
+inv_grid_y              = 0
+kind                    = w_pistol
+viz_idx                 = 0
+default_ruck            = false
+default_drop            = false
+unload_scheme           = 1
+
+; Базовые характеристики
+hit_impulse             = 18
+hit_power               = 0.35, 0.35, 0.35, 0.35
+rpm                     = 600
+bullet_speed            = 330
+fire_dispersion_base    = 0.2
+fire_dispersion_condition_factor = 1
+misfire_probability     = 0.005
+misfire_start_prob      = 0.005
+misfire_end_prob        = 0.1
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.0004
+condition_queue_shot_dec= 0.0008
+
+; Реалистичная перезарядка (секунды)
+; reload_d - стандартная (магазин не пуст)
+; reload_empty - полная (магазин пуст, нужно передернуть затвор)
+reload_d                = 1.8
+reload_empty            = 2.4
+
+ammo_class              = ammo_9x18_pmm
+ammo_elapsed            = 8
+ammo_mag_size           = 8
+startup_ammo            = 8
+
+visual                  = dynamics\weapons\wpn_pm\wpn_pm.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+strapping_offset        = 0.0, 0.0, 0.0
+strapping_orientation   = 0.0, 0.0, 0.0
+
+; Анимации с разделением типов перезарядки
+anim_idle               = wpn_pm_idle
+anim_draw               = wpn_pm_draw
+anim_hide               = wpn_pm_hide
+anim_reload             = wpn_pm_reload ; Тактическая (быстрая)
+anim_reload_empty       = wpn_pm_reload_empty ; Полная (медленная)
+anim_switch_on          = wpn_pm_in
+anim_switch_off         = wpn_pm_out
+anim_fire               = wpn_pm_shoot
+anim_fire_crouch        = wpn_pm_shoot_c
+anim_fire_locked        = wpn_pm_shoot_l
+anim_fire_crouch_locked = wpn_pm_shoot_lc
+anim_idle_sprint        = wpn_pm_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_pm_reload_snd
+sound_reload_empty      = wpn_pm_reload_empty_snd
+sound_bore              = wpn_pm_bore
+sound_hud_close         = wpn_generic_hud_close
+sound_hud_open          = wpn_generic_hud_open
+
+[wpn_ak74]:weapon_base
+class                   = WP_AK74
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_ak74
+inv_name_short          = st_wpn_ak74
+inv_grid_width          = 4
+inv_grid_height         = 2
+inv_grid_x              = 0
+inv_grid_y              = 0
+kind                    = w_rifle
+viz_idx                 = 1
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 45
+hit_power               = 0.55, 0.55, 0.55, 0.55
+rpm                     = 600
+bullet_speed            = 715
+fire_dispersion_base    = 0.45
+fire_dispersion_condition_factor = 5
+misfire_probability     = 0.002
+misfire_start_prob      = 0.002
+misfire_end_prob        = 0.1
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.0003
+condition_queue_shot_dec= 0.0006
+
+; Реалистичная перезарядка для автомата
+reload_d                = 2.1
+reload_empty            = 3.2
+
+ammo_class              = ammo_5.45x39_ap
+ammo_elapsed            = 30
+ammo_mag_size           = 30
+startup_ammo            = 30
+
+visual                  = dynamics\weapons\wpn_ak74\wpn_ak74.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_ak74_idle
+anim_draw               = wpn_ak74_draw
+anim_hide               = wpn_ak74_hide
+anim_reload             = wpn_ak74_reload
+anim_reload_empty       = wpn_ak74_reload_empty
+anim_switch_on          = wpn_ak74_in
+anim_switch_off         = wpn_ak74_out
+anim_fire               = wpn_ak74_shoot
+anim_fire_crouch        = wpn_ak74_shoot_c
+anim_fire_locked        = wpn_ak74_shoot_l
+anim_fire_crouch_locked = wpn_ak74_shoot_lc
+anim_idle_sprint        = wpn_ak74_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_ak74_reload_snd
+sound_reload_empty      = wpn_ak74_reload_empty_snd
+sound_bore              = wpn_ak74_bore
+
+[wpn_svd]:weapon_base
+class                   = WP_SVD
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_svd
+inv_name_short          = st_wpn_svd
+inv_grid_width          = 5
+inv_grid_height         = 2
+inv_grid_x              = 4
+inv_grid_y              = 0
+kind                    = w_rifle
+viz_idx                 = 2
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 75
+hit_power               = 0.95, 0.95, 0.95, 0.95
+rpm                     = 300
+bullet_speed            = 840
+fire_dispersion_base    = 0.25
+fire_dispersion_condition_factor = 2
+misfire_probability     = 0.001
+misfire_start_prob      = 0.001
+misfire_end_prob        = 0.05
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.0002
+condition_queue_shot_dec= 0.0004
+
+; Реалистичная перезарядка для снайперской винтовки (медленнее)
+reload_d                = 2.8
+reload_empty            = 4.1
+
+ammo_class              = ammo_7.62x54_7h1
+ammo_elapsed            = 10
+ammo_mag_size           = 10
+startup_ammo            = 10
+
+visual                  = dynamics\weapons\wpn_svd\wpn_svd.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_svd_idle
+anim_draw               = wpn_svd_draw
+anim_hide               = wpn_svd_hide
+anim_reload             = wpn_svd_reload
+anim_reload_empty       = wpn_svd_reload_empty
+anim_switch_on          = wpn_svd_in
+anim_switch_off         = wpn_svd_out
+anim_fire               = wpn_svd_shoot
+anim_fire_crouch        = wpn_svd_shoot_c
+anim_fire_locked        = wpn_svd_shoot_l
+anim_fire_crouch_locked = wpn_svd_shoot_lc
+anim_idle_sprint        = wpn_svd_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_svd_reload_snd
+sound_reload_empty      = wpn_svd_reload_empty_snd
+sound_bore              = wpn_svd_bore
+
+[wpn_groza]:weapon_base
+class                   = WP_GROZA
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_groza
+inv_name_short          = st_wpn_groza
+inv_grid_width          = 4
+inv_grid_height         = 2
+inv_grid_x              = 8
+inv_grid_y              = 2
+kind                    = w_rifle
+viz_idx                 = 3
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 50
+hit_power               = 0.65, 0.65, 0.65, 0.65
+rpm                     = 650
+bullet_speed            = 710
+fire_dispersion_base    = 0.35
+fire_dispersion_condition_factor = 4
+misfire_probability     = 0.002
+misfire_start_prob      = 0.002
+misfire_end_prob        = 0.1
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.0003
+condition_queue_shot_dec= 0.0006
+
+; Реалистичная перезарядка для Грозы
+reload_d                = 2.3
+reload_empty            = 3.5
+
+ammo_class              = ammo_9x39_ap
+ammo_elapsed            = 20
+ammo_mag_size           = 20
+startup_ammo            = 20
+
+visual                  = dynamics\weapons\wpn_groza\wpn_groza.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_groza_idle
+anim_draw               = wpn_groza_draw
+anim_hide               = wpn_groza_hide
+anim_reload             = wpn_groza_reload
+anim_reload_empty       = wpn_groza_reload_empty
+anim_switch_on          = wpn_groza_in
+anim_switch_off         = wpn_groza_out
+anim_fire               = wpn_groza_shoot
+anim_fire_crouch        = wpn_groza_shoot_c
+anim_fire_locked        = wpn_groza_shoot_l
+anim_fire_crouch_locked = wpn_groza_shoot_lc
+anim_idle_sprint        = wpn_groza_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_groza_reload_snd
+sound_reload_empty      = wpn_groza_reload_empty_snd
+sound_bore              = wpn_groza_bore
+
+[wpn_abakan]:weapon_base
+class                   = WP_ABAKAN
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_abakan
+inv_name_short          = st_wpn_abakan
+inv_grid_width          = 4
+inv_grid_height         = 2
+inv_grid_x              = 4
+inv_grid_y              = 2
+kind                    = w_rifle
+viz_idx                 = 4
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 48
+hit_power               = 0.60, 0.60, 0.60, 0.60
+rpm                     = 650
+bullet_speed            = 720
+fire_dispersion_base    = 0.38
+fire_dispersion_condition_factor = 4
+misfire_probability     = 0.002
+misfire_start_prob      = 0.002
+misfire_end_prob        = 0.1
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.0003
+condition_queue_shot_dec= 0.0006
+
+reload_d                = 2.2
+reload_empty            = 3.4
+
+ammo_class              = ammo_5.45x39_ap
+ammo_elapsed            = 30
+ammo_mag_size           = 30
+startup_ammo            = 30
+
+visual                  = dynamics\weapons\wpn_abakan\wpn_abakan.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_abakan_idle
+anim_draw               = wpn_abakan_draw
+anim_hide               = wpn_abakan_hide
+anim_reload             = wpn_abakan_reload
+anim_reload_empty       = wpn_abakan_reload_empty
+anim_switch_on          = wpn_abakan_in
+anim_switch_off         = wpn_abakan_out
+anim_fire               = wpn_abakan_shoot
+anim_fire_crouch        = wpn_abakan_shoot_c
+anim_fire_locked        = wpn_abakan_shoot_l
+anim_fire_crouch_locked = wpn_abakan_shoot_lc
+anim_idle_sprint        = wpn_abakan_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_abakan_reload_snd
+sound_reload_empty      = wpn_abakan_reload_empty_snd
+sound_bore              = wpn_abakan_bore
+
+[wpn_val]:weapon_base
+class                   = WP_VAL
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_val
+inv_name_short          = st_wpn_val
+inv_grid_width          = 4
+inv_grid_height         = 2
+inv_grid_x              = 12
+inv_grid_y              = 2
+kind                    = w_rifle
+viz_idx                 = 5
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 52
+hit_power               = 0.70, 0.70, 0.70, 0.70
+rpm                     = 600
+bullet_speed            = 620
+fire_dispersion_base    = 0.30
+fire_dispersion_condition_factor = 3
+misfire_probability     = 0.0015
+misfire_start_prob      = 0.0015
+misfire_end_prob        = 0.08
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.00025
+condition_queue_shot_dec= 0.0005
+
+reload_d                = 2.4
+reload_empty            = 3.6
+
+ammo_class              = ammo_9x39_ap
+ammo_elapsed            = 20
+ammo_mag_size           = 20
+startup_ammo            = 20
+
+visual                  = dynamics\weapons\wpn_val\wpn_val.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_val_idle
+anim_draw               = wpn_val_draw
+anim_hide               = wpn_val_hide
+anim_reload             = wpn_val_reload
+anim_reload_empty       = wpn_val_reload_empty
+anim_switch_on          = wpn_val_in
+anim_switch_off         = wpn_val_out
+anim_fire               = wpn_val_shoot
+anim_fire_crouch        = wpn_val_shoot_c
+anim_fire_locked        = wpn_val_shoot_l
+anim_fire_crouch_locked = wpn_val_shoot_lc
+anim_idle_sprint        = wpn_val_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_val_reload_snd
+sound_reload_empty      = wpn_val_reload_empty_snd
+sound_bore              = wpn_val_bore
+
+[wpn_vintorez]:weapon_base
+class                   = WP_VINTOREZ
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_vintorez
+inv_name_short          = st_wpn_vintorez
+inv_grid_width          = 4
+inv_grid_height         = 2
+inv_grid_x              = 0
+inv_grid_y              = 4
+kind                    = w_rifle
+viz_idx                 = 6
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 65
+hit_power               = 0.85, 0.85, 0.85, 0.85
+rpm                     = 450
+bullet_speed            = 580
+fire_dispersion_base    = 0.22
+fire_dispersion_condition_factor = 2
+misfire_probability     = 0.001
+misfire_start_prob      = 0.001
+misfire_end_prob        = 0.06
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.0002
+condition_queue_shot_dec= 0.0004
+
+reload_d                = 2.6
+reload_empty            = 3.9
+
+ammo_class              = ammo_9x39_ap
+ammo_elapsed            = 10
+ammo_mag_size           = 10
+startup_ammo            = 10
+
+visual                  = dynamics\weapons\wpn_vintorez\wpn_vintorez.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_vintorez_idle
+anim_draw               = wpn_vintorez_draw
+anim_hide               = wpn_vintorez_hide
+anim_reload             = wpn_vintorez_reload
+anim_reload_empty       = wpn_vintorez_reload_empty
+anim_switch_on          = wpn_vintorez_in
+anim_switch_off         = wpn_vintorez_out
+anim_fire               = wpn_vintorez_shoot
+anim_fire_crouch        = wpn_vintorez_shoot_c
+anim_fire_locked        = wpn_vintorez_shoot_l
+anim_fire_crouch_locked = wpn_vintorez_shoot_lc
+anim_idle_sprint        = wpn_vintorez_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_vintorez_reload_snd
+sound_reload_empty      = wpn_vintorez_reload_empty_snd
+sound_bore              = wpn_vintorez_bore
+
+[wpn_mp5]:weapon_base
+class                   = WP_MP5
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_mp5
+inv_name_short          = st_wpn_mp5
+inv_grid_width          = 3
+inv_grid_height         = 2
+inv_grid_x              = 8
+inv_grid_y              = 0
+kind                    = w_rifle
+viz_idx                 = 7
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 35
+hit_power               = 0.45, 0.45, 0.45, 0.45
+rpm                     = 700
+bullet_speed            = 400
+fire_dispersion_base    = 0.32
+fire_dispersion_condition_factor = 3
+misfire_probability     = 0.003
+misfire_start_prob      = 0.003
+misfire_end_prob        = 0.12
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.00035
+condition_queue_shot_dec= 0.0007
+
+reload_d                = 1.9
+reload_empty            = 2.9
+
+ammo_class              = ammo_9x19_pbp
+ammo_elapsed            = 30
+ammo_mag_size           = 30
+startup_ammo            = 30
+
+visual                  = dynamics\weapons\wpn_mp5\wpn_mp5.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_mp5_idle
+anim_draw               = wpn_mp5_draw
+anim_hide               = wpn_mp5_hide
+anim_reload             = wpn_mp5_reload
+anim_reload_empty       = wpn_mp5_reload_empty
+anim_switch_on          = wpn_mp5_in
+anim_switch_off         = wpn_mp5_out
+anim_fire               = wpn_mp5_shoot
+anim_fire_crouch        = wpn_mp5_shoot_c
+anim_fire_locked        = wpn_mp5_shoot_l
+anim_fire_crouch_locked = wpn_mp5_shoot_lc
+anim_idle_sprint        = wpn_mp5_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_mp5_reload_snd
+sound_reload_empty      = wpn_mp5_reload_empty_snd
+sound_bore              = wpn_mp5_bore
+
+[wpn_bm16]:weapon_base
+class                   = WP_BM16
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_bm16
+inv_name_short          = st_wpn_bm16
+inv_grid_width          = 4
+inv_grid_height         = 2
+inv_grid_x              = 12
+inv_grid_y              = 0
+kind                    = w_shotgun
+viz_idx                 = 8
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 90
+hit_power               = 0.80, 0.80, 0.80, 0.80
+rpm                     = 120
+bullet_speed            = 420
+fire_dispersion_base    = 0.60
+fire_dispersion_condition_factor = 8
+misfire_probability     = 0.004
+misfire_start_prob      = 0.004
+misfire_end_prob        = 0.15
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.0005
+condition_queue_shot_dec= 0.001
+
+; Дробовик заряжается по одному патрону - время на каждый патрон
+reload_d                = 0.9
+reload_empty            = 1.2
+
+ammo_class              = ammo_12x70_buck
+ammo_elapsed            = 2
+ammo_mag_size           = 2
+startup_ammo            = 2
+
+visual                  = dynamics\weapons\wpn_bm16\wpn_bm16.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_bm16_idle
+anim_draw               = wpn_bm16_draw
+anim_hide               = wpn_bm16_hide
+anim_reload             = wpn_bm16_reload
+anim_reload_empty       = wpn_bm16_reload_empty
+anim_switch_on          = wpn_bm16_in
+anim_switch_off         = wpn_bm16_out
+anim_fire               = wpn_bm16_shoot
+anim_fire_crouch        = wpn_bm16_shoot_c
+anim_fire_locked        = wpn_bm16_shoot_l
+anim_fire_crouch_locked = wpn_bm16_shoot_lc
+anim_idle_sprint        = wpn_bm16_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_bm16_reload_snd
+sound_reload_empty      = wpn_bm16_reload_empty_snd
+sound_bore              = wpn_bm16_bore
+
+[wpn_toz34]:weapon_base
+class                   = WP_TOZ34
+slot                    = 3
+animation_slot          = 3
+inv_name                = st_wpn_toz34
+inv_name_short          = st_wpn_toz34
+inv_grid_width          = 4
+inv_grid_height         = 2
+inv_grid_x              = 0
+inv_grid_y              = 6
+kind                    = w_shotgun
+viz_idx                 = 9
+default_ruck            = true
+default_drop            = true
+unload_scheme           = 2
+
+hit_impulse             = 95
+hit_power               = 0.85, 0.85, 0.85, 0.85
+rpm                     = 100
+bullet_speed            = 450
+fire_dispersion_base    = 0.55
+fire_dispersion_condition_factor = 7
+misfire_probability     = 0.0035
+misfire_start_prob      = 0.0035
+misfire_end_prob        = 0.14
+misfire_start_cond      = 0.1
+misfire_end_cond        = 0.9
+condition_shot_dec      = 0.00045
+condition_queue_shot_dec= 0.0009
+
+reload_d                = 1.0
+reload_empty            = 1.4
+
+ammo_class              = ammo_12x70_buck
+ammo_elapsed            = 2
+ammo_mag_size           = 2
+startup_ammo            = 2
+
+visual                  = dynamics\weapons\wpn_toz34\wpn_toz34.ogf
+position                = -0.026, -0.13, 0.0
+orientation             = 0, 0, 0
+
+anim_idle               = wpn_toz34_idle
+anim_draw               = wpn_toz34_draw
+anim_hide               = wpn_toz34_hide
+anim_reload             = wpn_toz34_reload
+anim_reload_empty       = wpn_toz34_reload_empty
+anim_switch_on          = wpn_toz34_in
+anim_switch_off         = wpn_toz34_out
+anim_fire               = wpn_toz34_shoot
+anim_fire_crouch        = wpn_toz34_shoot_c
+anim_fire_locked        = wpn_toz34_shoot_l
+anim_fire_crouch_locked = wpn_toz34_shoot_lc
+anim_idle_sprint        = wpn_toz34_idle_sprint
+
+sound_init              = wpn_generic_init
+sound_draw              = wpn_generic_draw
+sound_hide              = wpn_generic_hide
+sound_empty             = wpn_generic_empty
+sound_reload            = wpn_toz34_reload_snd
+sound_reload_empty      = wpn_toz34_reload_empty_snd
+sound_bore              = wpn_toz34_bore
+
+; =========================================================
+; Примечание для моддера:
+; Чтобы эта система работала визуально, вам понадобятся
+; соответствующие анимации (.anm) в папке meshes/weapons/...
+; с суффиксами _reload (тактическая) и _reload_empty (полная).
+; Если анимации _reload_empty нет, движок использует _reload.
+; =========================================================

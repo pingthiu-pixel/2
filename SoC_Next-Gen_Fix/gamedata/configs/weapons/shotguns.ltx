@@ -1,0 +1,112 @@
+; SoC Next-Gen Fix - Дробовики
+; Реалистичные характеристики
+
+[wpn_spas12]
+; СПСА-14 (SPAS-12)
+fire_rate          = 120        ; выстрелов в минуту (полуавтомат)
+damage             = 85         ; высокий урон вблизи
+accuracy           = 0.75       ; низкая точность
+recoil_horizontal  = 2.5        ; сильная отдача
+recoil_vertical    = 3.5
+reload_time_tac    = 0.8        ; перезарядка одного патрона (сек)
+reload_time_full   = 4.5        ; полная перезарядка магазина
+magazine_size      = 8          ; емкость магазина
+ammo_type          = ammo_12x70_buck
+weight             = 3.8        ; вес кг
+hand_inertia       = 1.2        ; инерция прицеливания
+cam_dispersion     = 0.15       ; большой разброс дроби
+cam_dispersion_inc = 0.05
+fire_dispersion_base = 0.35
+misfire_probability = 0.003
+misfire_condition_min = 0.8
+silencer_available = false
+fire_mode          = single
+pellets_count      = 8          ; количество дробин
+
+[wpn_spas12_rifled]
+; СПСА-14 нарезной (уникальная: повышенная точность)
+fire_rate          = 120
+damage             = 90         ; чуть выше урон
+accuracy           = 0.82       ; повышенная точность
+recoil_horizontal  = 2.3
+recoil_vertical    = 3.2
+reload_time_tac    = 0.8
+reload_time_full   = 4.5
+magazine_size      = 6          ; меньше из-за нарезов
+ammo_type          = ammo_12x70_slug
+weight             = 4.0
+hand_inertia       = 1.15
+cam_dispersion     = 0.08       ; меньший разброс
+cam_dispersion_inc = 0.025
+fire_dispersion_base = 0.18
+misfire_probability = 0.0025
+misfire_condition_min = 0.82
+silencer_available = false
+fire_mode          = single
+pellets_count      = 1          ; пуля, а не дробь
+
+[wpn_sawedoff]
+; Обрез
+fire_rate          = 100        ; медленная перезарядка
+damage             = 95         ; огромный урон вблизи
+accuracy           = 0.65       ; очень низкая точность
+recoil_horizontal  = 3.5        ; огромная отдача
+recoil_vertical    = 4.5
+reload_time_tac    = 1.5        ; перезарядка каждого патрона отдельно
+reload_time_full   = 3.0        ; два патрона
+magazine_size      = 2          ; всего 2 патрона
+ammo_type          = ammo_12x70_buck
+weight             = 2.2        ; легкий
+hand_inertia       = 0.9
+cam_dispersion     = 0.25       ; огромный разброс
+cam_dispersion_inc = 0.08
+fire_dispersion_base = 0.5
+misfire_probability = 0.005
+misfire_condition_min = 0.75
+silencer_available = false
+fire_mode          = single
+pellets_count      = 10         ; много дробин
+
+[wpn_toz66]
+; ТОЗ-66
+fire_rate          = 80
+damage             = 88
+accuracy           = 0.72
+recoil_horizontal  = 2.8
+recoil_vertical    = 3.8
+reload_time_tac    = 1.2
+reload_time_full   = 2.8
+magazine_size      = 2
+ammo_type          = ammo_12x70_buck
+weight             = 3.1
+hand_inertia       = 1.0
+cam_dispersion     = 0.18
+cam_dispersion_inc = 0.06
+fire_dispersion_base = 0.4
+misfire_probability = 0.004
+misfire_condition_min = 0.78
+silencer_available = false
+fire_mode          = single
+pellets_count      = 9
+
+[wpn_toz34]
+; ТОЗ-34
+fire_rate          = 90
+damage             = 82
+accuracy           = 0.78       ; лучше точность
+recoil_horizontal  = 2.4
+recoil_vertical    = 3.4
+reload_time_tac    = 1.0
+reload_time_full   = 2.4
+magazine_size      = 2
+ammo_type          = ammo_12x70_buck
+weight             = 2.9
+hand_inertia       = 0.95
+cam_dispersion     = 0.14
+cam_dispersion_inc = 0.045
+fire_dispersion_base = 0.32
+misfire_probability = 0.0035
+misfire_condition_min = 0.8
+silencer_available = false
+fire_mode          = single
+pellets_count      = 8

@@ -1,0 +1,92 @@
+; SoC Next-Gen Fix - Погода: Дождь (Rain)
+; Стандартная структура для X-Ray движка
+; Секции: [sky], [sun], [fog], [clouds], [rain]
+
+[rain_day]
+type = rain
+
+[sky]
+sky_color = 0.3, 0.35, 0.4
+sky_gradient = 0.2, 0.25, 0.3
+sky_rotation = 0.0
+
+[sun]
+sun_color = 0.6, 0.6, 0.7
+sun_intensity = 0.3
+sun_shadow = 0.2
+
+[fog]
+fog_color = 0.4, 0.45, 0.5
+fog_density = 0.003
+fog_distance = 100
+
+[clouds]
+clouds_texture = ui\ui_noise_02
+clouds_speed = 0.05
+clouds_scale = 2.0
+clouds_density = 0.8
+
+[rain]
+rain_density = 0.8
+rain_color = 0.5, 0.5, 0.6
+rain_speed = 1.0
+wind_velocity = 5
+wind_direction = 0.5
+
+[rain_evening]
+type = rain
+
+[sky:rain_evening]
+sky_color = 0.4, 0.35, 0.35
+sky_gradient = 0.25, 0.2, 0.2
+
+[sun:rain_evening]
+sun_color = 0.8, 0.5, 0.3
+sun_intensity = 0.2
+
+[fog:rain_evening]
+fog_color = 0.5, 0.4, 0.4
+fog_density = 0.004
+
+[rain_night]
+type = rain
+
+[sky:rain_night]
+sky_color = 0.08, 0.08, 0.12
+sky_gradient = 0.05, 0.05, 0.1
+
+[sun:rain_night]
+sun_color = 0.2, 0.2, 0.3
+sun_intensity = 0.0
+
+[fog:rain_night]
+fog_color = 0.15, 0.15, 0.2
+fog_density = 0.0025
+
+[clouds:rain_night]
+clouds_texture = ui\ui_noise_02
+clouds_speed = 0.03
+clouds_density = 0.7
+
+[rain:rain_night]
+rain_density = 0.7
+wind_velocity = 4
+
+[rain_morning]
+type = rain
+
+[sky:rain_morning]
+sky_color = 0.35, 0.4, 0.45
+sky_gradient = 0.2, 0.25, 0.3
+
+[sun:rain_morning]
+sun_color = 0.7, 0.7, 0.8
+sun_intensity = 0.4
+
+[fog:rain_morning]
+fog_color = 0.4, 0.45, 0.5
+fog_density = 0.0035
+
+[rain:rain_morning]
+rain_density = 0.6
+wind_velocity = 3

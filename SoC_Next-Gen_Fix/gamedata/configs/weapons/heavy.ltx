@@ -1,0 +1,78 @@
+; SoC Next-Gen Fix - Гранатомёты и тяжёлое вооружение
+; Реалистичные характеристики
+
+[wpn_grenade_launcher]
+; ГП-25 "Костёр" (подствольный гранатомёт)
+fire_rate          = 30         ; выстрелов в минуту
+damage             = 150        ; высокий урон от взрыва
+accuracy           = 0.80       ; средняя точность
+recoil_horizontal  = 2.0        ; отдача
+recoil_vertical    = 3.0
+reload_time_tac    = 4.0        ; перезарядка (сек)
+reload_time_full   = 5.0
+magazine_size      = 1          ; один выстрел
+ammo_type          = ammo_vog-25
+weight             = 1.5        ; вес без основного оружия
+hand_inertia       = 1.5
+cam_dispersion     = 0.08
+cam_dispersion_inc = 0.03
+fire_dispersion_base = 0.15
+misfire_probability = 0.002
+misfire_condition_min = 0.85
+silencer_available = false
+fire_mode          = single
+explosion_radius   = 6.0        ; радиус взрыва (м)
+fuse_time          = 1.5        ; время срабатывания взрывателя (сек)
+projectile_speed   = 75         ; скорость полета снаряда (м/с)
+gravity_factor     = 1.2        ; влияние гравитации на траекторию
+
+[wpn_rg6]
+; РГ-6 "Бульдог-6"
+fire_rate          = 60
+damage             = 160
+accuracy           = 0.78
+recoil_horizontal  = 2.5
+recoil_vertical    = 3.5
+reload_time_tac    = 5.0        ; долгая перезарядка барабана
+reload_time_full   = 7.0
+magazine_size      = 6          ; барабан на 6 гранат
+ammo_type          = ammo_vog-25
+weight             = 4.8        ; тяжелый
+hand_inertia       = 1.8
+cam_dispersion     = 0.1
+cam_dispersion_inc = 0.035
+fire_dispersion_base = 0.18
+misfire_probability = 0.0025
+misfire_condition_min = 0.82
+silencer_available = false
+fire_mode          = single
+explosion_radius   = 6.5
+fuse_time          = 1.5
+projectile_speed   = 70
+gravity_factor     = 1.3
+
+[wpn_rpg7]
+; РПГ-7у
+fire_rate          = 20         ; очень медленная скорострельность
+damage             = 250        ; огромный урон
+accuracy           = 0.85       ; хорошая точность с прицелом
+recoil_horizontal  = 3.0        ; сильная отдача
+recoil_vertical    = 4.5
+reload_time_tac    = 6.0        ; очень долгая перезарядка
+reload_time_full   = 8.0
+magazine_size      = 1
+ammo_type          = ammo_og-7
+weight             = 6.3        ; очень тяжелый
+hand_inertia       = 2.2
+cam_dispersion     = 0.05
+cam_dispersion_inc = 0.02
+fire_dispersion_base = 0.1
+misfire_probability = 0.001
+misfire_condition_min = 0.88
+silencer_available = false
+fire_mode          = single
+explosion_radius   = 10.0       ; большой радиус взрыва
+fuse_time          = 2.0        ; время срабатывания
+projectile_speed   = 115        ; высокая скорость полета
+gravity_factor     = 0.8        ; более пологая траектория
+scope_zoom_factor  = 3.5        ; прицел ПГО-7
