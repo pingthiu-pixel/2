@@ -1,0 +1,122 @@
+; SoC Next-Gen Fix - Холодное оружие и гранаты
+; Реалистичные характеристики
+
+[wpn_knife]
+; Нож
+damage_base        = 25         ; базовый урон
+damage_critical    = 75         ; критический урон (в голову/шею)
+attack_speed       = 1.2        ; скорость атаки (сек между ударами)
+reach              = 1.5        ; дистанция атаки (м)
+stamina_cost       = 8          ; расход выносливости за удар
+weight             = 0.35       ; вес кг
+
+; Типы урона
+damage_type_blade  = 0.85       ; режущий урон (85%)
+damage_type_pierce = 0.65       ; колющий урон (65%)
+damage_type_hit    = 0.45       ; ударный урон (45%)
+
+; Модификаторы от выносливости
+stamina_mod_low    = 0.5        ; при выносливости <30%: 50% урона
+stamina_mod_med    = 0.75       ; при выносливости 30-60%: 75% урона
+stamina_mod_high   = 1.0        ; при выносливости >60%: 100% урона
+stamina_mod_max    = 1.15       ; при выносливости >90%: 115% урона (бонус)
+
+; Анимации и звуки
+anim_idle          = knife_idle
+anim_attack_light  = knife_attack_light
+anim_attack_heavy  = knife_attack_heavy
+anim_block         = knife_block
+sound_swing        = weapons/knife_swing
+sound_hit_flesh    = weapons/knife_hit_flesh
+sound_hit_armor    = weapons/knife_hit_armor
+sound_draw         = weapons/knife_draw
+sound_holster      = weapons/knife_holster
+
+; Блок и парирование
+block_enabled      = true
+block_stamina_cost = 3          ; расход выносливости в секунду при блоке
+block_damage_reduce = 0.7       ; снижение урона при блоке (70%)
+parry_window       = 0.3        ; окно для парирования (сек)
+parry_counter_bonus = 1.5       ; бонус урона при контратаке после парирования
+
+; Критические попадания
+crit_head_mult     = 3.0        ; множитель урона в голову
+crit_neck_mult     = 2.5        ; множитель урона в шею
+crit_chest_mult    = 1.2        ; множитель урона в грудь
+crit_limb_mult     = 0.8        ; множитель урона в конечности
+
+; Состояние ножа
+condition_decay    = 0.001      ; износ за удар
+condition_min_effective = 0.3   ; ниже 30% эффективности нож почти бесполезен
+
+
+[w_grenade_rgd]
+; Ручная граната РГД-5
+throw_force        = 25.0       ; сила броска
+throw_accuracy     = 0.85       ; точность броска
+fuse_time          = 3.5        ; время до взрыва (сек)
+explosion_radius   = 5.0        ; радиус поражения (м)
+damage_base        = 120        ; базовый урон
+damage_frag        = 45         ; урон осколками
+frag_count         = 90         ; количество осколков
+weight             = 0.31       ; вес кг
+
+; Анимации и тайминги
+anim_pull_pin      = grenade_rgd_pull
+anim_throw         = grenade_rgd_throw
+anim_cook          = grenade_rgd_cook
+sound_pin          = weapons/grenade_pin
+sound_throw        = weapons/grenade_throw
+sound_explode      = weapons/grenade_explode
+
+; Механика "приготовления"
+cook_enabled       = true       ; можно держать гранату с вытащенной чекой
+cook_max_time      = 2.5        ; максимальное время "варки" (сек)
+cook_warning_time  = 0.5        ; предупреждение о взрыве за (сек)
+auto_throw_on_release = true    ; автобросок при отпускании кнопки
+
+; Бросок от плеча/от пояса
+throw_from_shoulder_power = 1.2 ; +20% к дальности броска от плеча
+throw_from_waist_power    = 0.8 ; -20% к дальности броска от пояса
+shoulder_throw_time       = 1.5 ; время подготовки броска от плеча (сек)
+waist_throw_time          = 0.8 ; время подготовки броска от пояса (сек)
+
+; Влияние выносливости
+stamina_cost_throw   = 15       ; расход выносливости на бросок
+stamina_throw_penalty = 0.6     ; штраф к силе броска при низкой выносливости
+
+
+[w_grenade_f1]
+; Ручная граната Ф-1
+throw_force        = 22.0       ; чуть меньше сила броска (тяжелее)
+throw_accuracy     = 0.82       ; чуть ниже точность
+fuse_time          = 4.0        ; дольше время до взрыва
+explosion_radius   = 7.0        ; больший радиус поражения
+damage_base        = 150        ; выше урон
+damage_frag        = 55         ; выше урон осколками
+frag_count         = 290        ; больше осколков
+weight             = 0.60       ; тяжелее
+
+; Анимации и тайминги
+anim_pull_pin      = grenade_f1_pull
+anim_throw         = grenade_f1_throw
+anim_cook          = grenade_f1_cook
+sound_pin          = weapons/grenade_pin
+sound_throw        = weapons/grenade_throw
+sound_explode      = weapons/grenade_explode
+
+; Механика "приготовления"
+cook_enabled       = true
+cook_max_time      = 3.0
+cook_warning_time  = 0.8
+auto_throw_on_release = true
+
+; Бросок от плеча/от пояса
+throw_from_shoulder_power = 1.15
+throw_from_waist_power    = 0.75
+shoulder_throw_time       = 1.6
+waist_throw_time          = 0.9
+
+; Влияние выносливости
+stamina_cost_throw   = 18       ; больше расход из-за веса
+stamina_throw_penalty = 0.55    ; больше штраф при низкой выносливости

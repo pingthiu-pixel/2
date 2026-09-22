@@ -4,6 +4,7 @@
 __pycache__/
 *.o
 *.obj
+*.class
 *.exe
 *.dll
 *.so
@@ -18,30 +19,21 @@ venv/
 .env.local
 .env.*
 
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Editors
+.vscode/
+.idea/
+
 # Build directories
 dist/
 build/
 target/
 .gradle/
-
-# Editor/IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-
-# System files
-.DS_Store
-Thumbs.db
-
-# Logs
-*.log
-
-# Coverage
-coverage/
-htmlcov/
-.coverage
 
 # Python specific
 *.pyc
@@ -50,9 +42,19 @@ __pycache__/
 *.pyd
 .Python
 *.so
-.PyInstaller/
-.pytest_cache/
+
+# Coverage reports
+coverage/
+htmlcov/
+.coverage
+
+# MyPy cache
 .mypy_cache/
+.pytest_cache/
+
+# System files
+.DS_Store
+Thumbs.db
 
 # Compressed files
 *.zip

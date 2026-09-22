@@ -1,0 +1,113 @@
+; SoC Next-Gen Fix - Снайперские винтовки
+; Реалистичные характеристики
+
+[wpn_vintorez]
+; Винтарь-ВС (ВСС «Винторез»)
+fire_rate          = 400        ; выстрелов в минуту
+damage             = 55         ; высокий урон
+accuracy           = 0.95       ; высокая точность
+recoil_horizontal  = 0.8        ; низкая отдача
+recoil_vertical    = 1.2
+reload_time_tac    = 3.0       ; тактическая перезарядка (сек)
+reload_time_full   = 4.0       ; полная перезарядка (сек)
+magazine_size      = 10        ; емкость магазина
+ammo_type          = ammo_9x39_ap
+weight             = 2.6       ; вес кг
+hand_inertia       = 0.75      ; инерция прицеливания
+cam_dispersion     = 0.02      ; минимальный разброс
+cam_dispersion_inc = 0.005
+fire_dispersion_base = 0.05
+misfire_probability = 0.0005
+misfire_condition_min = 0.92
+silencer_available = true
+silencer_attached  = true
+fire_mode          = single, auto
+scope_zoom_factor  = 4.0       ; кратность прицела
+
+[wpn_svd]
+; СВДм-2 (Снайперская винтовка Драгунова)
+fire_rate          = 300
+damage             = 65
+accuracy           = 0.93
+recoil_horizontal  = 1.2
+recoil_vertical    = 2.0
+reload_time_tac    = 2.8
+reload_time_full   = 3.8
+magazine_size      = 10
+ammo_type          = ammo_7.62x54_7h1
+weight             = 4.3
+hand_inertia       = 0.95
+cam_dispersion     = 0.025
+cam_dispersion_inc = 0.008
+fire_dispersion_base = 0.08
+misfire_probability = 0.0008
+misfire_condition_min = 0.9
+silencer_available = true
+fire_mode          = single
+scope_zoom_factor  = 4.0
+
+[wpn_sip_sniper]
+; СИП снайперский
+fire_rate          = 350
+damage             = 58
+accuracy           = 0.92
+recoil_horizontal  = 1.0
+recoil_vertical    = 1.7
+reload_time_tac    = 2.6
+reload_time_full   = 3.5
+magazine_size      = 10
+ammo_type          = ammo_9x39_ap
+weight             = 3.8
+hand_inertia       = 0.88
+cam_dispersion     = 0.028
+cam_dispersion_inc = 0.009
+fire_dispersion_base = 0.09
+misfire_probability = 0.001
+misfire_condition_min = 0.88
+silencer_available = true
+fire_mode          = single
+scope_zoom_factor  = 3.5
+
+[wpn_sip_m200]
+; СИП-т М200
+fire_rate          = 280
+damage             = 75         ; очень высокий урон
+accuracy           = 0.96       ; максимальная точность
+recoil_horizontal  = 1.5       ; сильная отдача
+recoil_vertical    = 2.5
+reload_time_tac    = 3.2
+reload_time_full   = 4.2
+magazine_size      = 7         ; малый магазин
+ammo_type          = ammo_7.62x54_7h1
+weight             = 5.2       ; тяжелая винтовка
+hand_inertia       = 1.1
+cam_dispersion     = 0.015
+cam_dispersion_inc = 0.004
+fire_dispersion_base = 0.04
+misfire_probability = 0.0003
+misfire_condition_min = 0.95
+silencer_available = false
+fire_mode          = single
+scope_zoom_factor  = 6.0       ; высокая кратность
+
+[wpn_svu]
+; СВУ-Мк2 (Снайперская винтовка укороченная)
+fire_rate          = 320
+damage             = 62
+accuracy           = 0.90
+recoil_horizontal  = 1.4       ; выше отдача из-за компоновки
+recoil_vertical    = 2.3
+reload_time_tac    = 2.5
+reload_time_full   = 3.4
+magazine_size      = 10
+ammo_type          = ammo_7.62x54_7h1
+weight             = 3.8       ; легче обычной СВД
+hand_inertia       = 0.85
+cam_dispersion     = 0.032
+cam_dispersion_inc = 0.01
+fire_dispersion_base = 0.1
+misfire_probability = 0.0012
+misfire_condition_min = 0.87
+silencer_available = true
+fire_mode          = single
+scope_zoom_factor  = 3.0

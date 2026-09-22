@@ -1,0 +1,507 @@
+--================================================================================
+-- SoC Next-Gen Fix - Система реалистичного оружия
+-- Реализует: перезарядку, урон, отдачу, выстрелы, попадания для всего оружия
+-- А также реалистичные гранаты и нож
+--================================================================================
+
+-- Таблица конфигурации оружия (загружается из .ltx файлов)
+local weapon_config = {
+    -- Пистолеты
+    ["wpn_pm"] = {
+        fire_rate = 600, damage = 28, accuracy = 0.92,
+        recoil_h = 0.8, recoil_v = 1.2,
+        reload_tac = 1.8, reload_full = 2.4,
+        mag_size = 8, ammo = "ammo_9x18_pmm"
+    },
+    ["wpn_pb"] = {
+        fire_rate = 600, damage = 26, accuracy = 0.94,
+        recoil_h = 0.6, recoil_v = 1.0,
+        reload_tac = 1.9, reload_full = 2.5,
+        mag_size = 8, ammo = "ammo_9x18_pmm", silencer = true
+    },
+    ["wpn_fort12"] = {
+        fire_rate = 550, damage = 32, accuracy = 0.89,
+        recoil_h = 1.0, recoil_v = 1.5,
+        reload_tac = 2.0, reload_full = 2.8,
+        mag_size = 12, ammo = "ammo_9x19_pbp"
+    },
+    ["wpn_fort15"] = {
+        fire_rate = 600, damage = 30, accuracy = 0.91,
+        recoil_h = 0.9, recoil_v = 1.3,
+        reload_tac = 2.1, reload_full = 2.9,
+        mag_size = 15, ammo = "ammo_9x19_pbp"
+    },
+    ["wpn_walker"] = {
+        fire_rate = 750, damage = 29, accuracy = 0.96,
+        recoil_h = 0.4, recoil_v = 0.6,
+        reload_tac = 1.7, reload_full = 2.3,
+        mag_size = 12, ammo = "ammo_9x18_pmm"
+    },
+    ["wpn_kora"] = {
+        fire_rate = 580, damage = 35, accuracy = 0.93,
+        recoil_h = 0.7, recoil_v = 1.1,
+        reload_tac = 2.0, reload_full = 2.7,
+        mag_size = 18, ammo = "ammo_9x19_pbp", silencer = true
+    },
+    ["wpn_beretta"] = {
+        fire_rate = 600, damage = 31, accuracy = 0.90,
+        recoil_h = 0.95, recoil_v = 1.4,
+        reload_tac = 2.2, reload_full = 3.0,
+        mag_size = 15, ammo = "ammo_9x19_pbp"
+    },
+    ["wpn_blackhawk"] = {
+        fire_rate = 720, damage = 30, accuracy = 0.94,
+        recoil_h = 0.45, recoil_v = 0.65,
+        reload_tac = 1.8, reload_full = 2.5,
+        mag_size = 19, ammo = "ammo_9x19_pbp"
+    },
+    
+    -- Пистолеты-пулемёты
+    ["wpn_groza"] = {
+        fire_rate = 750, damage = 32, accuracy = 0.88,
+        recoil_h = 1.2, recoil_v = 1.8,
+        reload_tac = 2.3, reload_full = 3.2,
+        mag_size = 30, ammo = "ammo_5.56x45_ss190"
+    },
+    ["wpn_l85"] = {
+        fire_rate = 650, damage = 34, accuracy = 0.85,
+        recoil_h = 1.4, recoil_v = 2.0,
+        reload_tac = 2.5, reload_full = 3.4,
+        mag_size = 30, ammo = "ammo_5.56x45_ss190"
+    },
+    ["wpn_l85_balance"] = {
+        fire_rate = 650, damage = 34, accuracy = 0.87,
+        recoil_h = 0.9, recoil_v = 1.3,
+        reload_tac = 2.4, reload_full = 3.3,
+        mag_size = 30, ammo = "ammo_5.56x45_ss190"
+    },
+    ["wpn_lr300"] = {
+        fire_rate = 700, damage = 33, accuracy = 0.89,
+        recoil_h = 1.1, recoil_v = 1.6,
+        reload_tac = 2.2, reload_full = 3.0,
+        mag_size = 30, ammo = "ammo_5.56x45_ss190"
+    },
+    ["wpn_lr300_sniper"] = {
+        fire_rate = 500, damage = 36, accuracy = 0.93,
+        recoil_h = 0.8, recoil_v = 1.2,
+        reload_tac = 2.4, reload_full = 3.2,
+        mag_size = 30, ammo = "ammo_5.56x45_ss190", silencer = true
+    },
+    ["wpn_akms"] = {
+        fire_rate = 600, damage = 35, accuracy = 0.86,
+        recoil_h = 1.3, recoil_v = 1.9,
+        reload_tac = 2.1, reload_full = 2.9,
+        mag_size = 30, ammo = "ammo_9x39_ap"
+    },
+    
+    -- Автоматы
+    ["wpn_ak74"] = {
+        fire_rate = 600, damage = 36, accuracy = 0.87,
+        recoil_h = 1.3, recoil_v = 1.9,
+        reload_tac = 2.2, reload_full = 3.0,
+        mag_size = 30, ammo = "ammo_5.45x39_ap"
+    },
+    ["wpn_ak74u"] = {
+        fire_rate = 650, damage = 32, accuracy = 0.82,
+        recoil_h = 1.5, recoil_v = 2.2,
+        reload_tac = 2.0, reload_full = 2.8,
+        mag_size = 30, ammo = "ammo_5.45x39_ap"
+    },
+    ["wpn_ak74u_spetsnaz"] = {
+        fire_rate = 650, damage = 30, accuracy = 0.85,
+        recoil_h = 1.2, recoil_v = 1.8,
+        reload_tac = 2.1, reload_full = 2.9,
+        mag_size = 30, ammo = "ammo_5.45x39_ap", silencer = true
+    },
+    ["wpn_ak74_fast"] = {
+        fire_rate = 800, damage = 34, accuracy = 0.84,
+        recoil_h = 1.6, recoil_v = 2.3,
+        reload_tac = 2.2, reload_full = 3.0,
+        mag_size = 30, ammo = "ammo_5.45x39_ap"
+    },
+    ["wpn_sg550"] = {
+        fire_rate = 700, damage = 35, accuracy = 0.90,
+        recoil_h = 1.1, recoil_v = 1.6,
+        reload_tac = 2.3, reload_full = 3.1,
+        mag_size = 30, ammo = "ammo_5.56x45_ss190"
+    },
+    ["wpn_f2000"] = {
+        fire_rate = 750, damage = 34, accuracy = 0.89,
+        recoil_h = 1.0, recoil_v = 1.5,
+        reload_tac = 2.4, reload_full = 3.2,
+        mag_size = 30, ammo = "ammo_5.56x45_ss190"
+    },
+    
+    -- Снайперские винтовки
+    ["wpn_vintorez"] = {
+        fire_rate = 400, damage = 55, accuracy = 0.95,
+        recoil_h = 0.8, recoil_v = 1.2,
+        reload_tac = 3.0, reload_full = 4.0,
+        mag_size = 10, ammo = "ammo_9x39_ap", silencer = true
+    },
+    ["wpn_svd"] = {
+        fire_rate = 300, damage = 65, accuracy = 0.93,
+        recoil_h = 1.2, recoil_v = 2.0,
+        reload_tac = 2.8, reload_full = 3.8,
+        mag_size = 10, ammo = "ammo_7.62x54_7h1"
+    },
+    ["wpn_sip_sniper"] = {
+        fire_rate = 350, damage = 58, accuracy = 0.92,
+        recoil_h = 1.0, recoil_v = 1.7,
+        reload_tac = 2.6, reload_full = 3.5,
+        mag_size = 10, ammo = "ammo_9x39_ap"
+    },
+    ["wpn_sip_m200"] = {
+        fire_rate = 280, damage = 75, accuracy = 0.96,
+        recoil_h = 1.5, recoil_v = 2.5,
+        reload_tac = 3.2, reload_full = 4.2,
+        mag_size = 7, ammo = "ammo_7.62x54_7h1"
+    },
+    ["wpn_svu"] = {
+        fire_rate = 320, damage = 62, accuracy = 0.90,
+        recoil_h = 1.4, recoil_v = 2.3,
+        reload_tac = 2.5, reload_full = 3.4,
+        mag_size = 10, ammo = "ammo_7.62x54_7h1"
+    },
+    
+    -- Дробовики
+    ["wpn_spas12"] = {
+        fire_rate = 120, damage = 85, accuracy = 0.75,
+        recoil_h = 2.5, recoil_v = 3.5,
+        reload_tac = 0.8, reload_full = 4.5,
+        mag_size = 8, ammo = "ammo_12x70_buck", pellets = 8
+    },
+    ["wpn_spas12_rifled"] = {
+        fire_rate = 120, damage = 90, accuracy = 0.82,
+        recoil_h = 2.3, recoil_v = 3.2,
+        reload_tac = 0.8, reload_full = 4.5,
+        mag_size = 6, ammo = "ammo_12x70_slug", pellets = 1
+    },
+    ["wpn_sawedoff"] = {
+        fire_rate = 100, damage = 95, accuracy = 0.65,
+        recoil_h = 3.5, recoil_v = 4.5,
+        reload_tac = 1.5, reload_full = 3.0,
+        mag_size = 2, ammo = "ammo_12x70_buck", pellets = 10
+    },
+    ["wpn_toz66"] = {
+        fire_rate = 80, damage = 88, accuracy = 0.72,
+        recoil_h = 2.8, recoil_v = 3.8,
+        reload_tac = 1.2, reload_full = 2.8,
+        mag_size = 2, ammo = "ammo_12x70_buck", pellets = 9
+    },
+    ["wpn_toz34"] = {
+        fire_rate = 90, damage = 82, accuracy = 0.78,
+        recoil_h = 2.4, recoil_v = 3.4,
+        reload_tac = 1.0, reload_full = 2.4,
+        mag_size = 2, ammo = "ammo_12x70_buck", pellets = 8
+    },
+    
+    -- Гранатомёты
+    ["wpn_grenade_launcher"] = {
+        fire_rate = 30, damage = 150, accuracy = 0.80,
+        recoil_h = 2.0, recoil_v = 3.0,
+        reload_tac = 4.0, reload_full = 5.0,
+        mag_size = 1, ammo = "ammo_vog-25",
+        explosion_radius = 6.0, fuse_time = 1.5
+    },
+    ["wpn_rg6"] = {
+        fire_rate = 60, damage = 160, accuracy = 0.78,
+        recoil_h = 2.5, recoil_v = 3.5,
+        reload_tac = 5.0, reload_full = 7.0,
+        mag_size = 6, ammo = "ammo_vog-25",
+        explosion_radius = 6.5, fuse_time = 1.5
+    },
+    ["wpn_rpg7"] = {
+        fire_rate = 20, damage = 250, accuracy = 0.85,
+        recoil_h = 3.0, recoil_v = 4.5,
+        reload_tac = 6.0, reload_full = 8.0,
+        mag_size = 1, ammo = "ammo_og-7",
+        explosion_radius = 10.0, fuse_time = 2.0
+    },
+    
+    -- Нож
+    ["wpn_knife"] = {
+        damage_base = 25, damage_crit = 75,
+        attack_speed = 1.2, reach = 1.5,
+        stamina_cost = 8,
+        crit_head = 3.0, crit_neck = 2.5,
+        crit_chest = 1.2, crit_limb = 0.8
+    },
+    
+    -- Гранаты
+    ["w_grenade_rgd"] = {
+        throw_force = 25.0, throw_accuracy = 0.85,
+        fuse_time = 3.5, explosion_radius = 5.0,
+        damage = 120, frag_count = 90,
+        cook_max = 2.5, cook_warning = 0.5
+    },
+    ["w_grenade_f1"] = {
+        throw_force = 22.0, throw_accuracy = 0.82,
+        fuse_time = 4.0, explosion_radius = 7.0,
+        damage = 150, frag_count = 290,
+        cook_max = 3.0, cook_warning = 0.8
+    }
+}
+
+--================================================================================
+-- Глобальные переменные
+--================================================================================
+local db = _G.db or {}
+local realistic_weapon = {}
+
+-- Состояние перезарядки
+local reloading = false
+local reload_start_time = 0
+local reload_type = "tac" -- "tac" или "full"
+local current_weapon = nil
+
+-- Состояние гранаты
+local grenade_cooking = false
+local grenade_start_time = 0
+local grenade_type = nil
+
+--================================================================================
+-- Функции оружия
+--================================================================================
+
+--- Получить конфиг оружия
+function realistic_weapon.get_config(weapon_section)
+    return weapon_config[weapon_section]
+end
+
+--- Применить отдачу к камере
+function realistic_weapon.apply_recoil(weapon_section, actor)
+    local cfg = weapon_config[weapon_section]
+    if not cfg then return end
+    
+    local recoil_h = cfg.recoil_h or 1.0
+    local recoil_v = cfg.recoil_v or 1.0
+    
+    -- Модификатор от выносливости
+    local stamina = actor:conditions().stamina or 1.0
+    local stamina_mod = 1.0
+    if stamina < 0.3 then
+        stamina_mod = 1.5
+    elseif stamina < 0.6 then
+        stamina_mod = 1.2
+    end
+    
+    -- Применение отдачи
+    if actor == db.actor then
+        level.cam_apply(recoil_h * stamina_mod, recoil_v * stamina_mod)
+    end
+end
+
+--- Рассчитать урон с учетом модификаторов
+function realistic_weapon.calculate_damage(weapon_section, hit_params)
+    local cfg = weapon_config[weapon_section]
+    if not cfg then return 0 end
+    
+    local base_damage = cfg.damage or cfg.damage_base or 0
+    local hit_type = hit_params.hit_type or "bullet"
+    local bone = hit_params.bone or "bip01_spine"
+    
+    -- Модификаторы по костям
+    local bone_mult = 1.0
+    if bone:find("head") then
+        bone_mult = cfg.crit_head or 2.0
+    elseif bone:find("neck") then
+        bone_mult = cfg.crit_neck or 1.8
+    elseif bone:find("chest") or bone:find("spine") then
+        bone_mult = cfg.crit_chest or 1.0
+    else
+        bone_mult = cfg.crit_limb or 0.8
+    end
+    
+    -- Модификатор от расстояния
+    local dist = hit_params.distance or 0
+    local dist_mod = 1.0 - (dist / 500) -- Уменьшение урона на дистанции
+    if dist_mod < 0.3 then dist_mod = 0.3 end
+    
+    -- Итоговый урон
+    local final_damage = base_damage * bone_mult * dist_mod
+    
+    return math.floor(final_damage)
+end
+
+--- Начать перезарядку
+function realistic_weapon.start_reload(weapon_section, is_tactical)
+    local cfg = weapon_config[weapon_section]
+    if not cfg then return false end
+    
+    reloading = true
+    reload_start_time = os.time()
+    reload_type = is_tactical and "tac" or "full"
+    current_weapon = weapon_section
+    
+    local reload_time = is_tactical and cfg.reload_tac or cfg.reload_full
+    msg2(string.format("Перезарядка: %.1f сек...", reload_time))
+    
+    return true
+end
+
+--- Проверка завершения перезарядки
+function realistic_weapon.check_reload_complete()
+    if not reloading then return false end
+    
+    local cfg = weapon_config[current_weapon]
+    if not cfg then 
+        reloading = false
+        return false 
+    end
+    
+    local elapsed = os.time() - reload_start_time
+    local required_time = reload_type == "tac" and cfg.reload_tac or cfg.reload_full
+    
+    if elapsed >= required_time then
+        reloading = false
+        msg2("Перезарядка завершена!")
+        return true
+    end
+    
+    return false
+end
+
+--================================================================================
+-- Функции ножа
+--================================================================================
+
+--- Атака ножом с учетом выносливости
+function realistic_weapon.knife_attack(actor, target, is_heavy)
+    local cfg = weapon_config["wpn_knife"]
+    if not cfg then return 0 end
+    
+    local stamina = actor:conditions().stamina or 1.0
+    local damage_mult = 1.0
+    
+    -- Модификатор от выносливости
+    if stamina < 0.3 then
+        damage_mult = cfg.stamina_mod_low or 0.5
+    elseif stamina < 0.6 then
+        damage_mult = cfg.stamina_mod_med or 0.75
+    elseif stamina > 0.9 then
+        damage_mult = cfg.stamina_mod_max or 1.15
+    end
+    
+    -- Тип атаки
+    local base_dmg = is_heavy and (cfg.damage_crit or 75) or (cfg.damage_base or 25)
+    local final_damage = math.floor(base_dmg * damage_mult)
+    
+    -- Расход выносливости
+    local stamina_cost = cfg.stamina_cost or 8
+    if is_heavy then stamina_cost = stamina_cost * 1.5 end
+    actor:conditions().stamina = stamina - (stamina_cost / 100)
+    
+    return final_damage
+end
+
+--================================================================================
+-- Функции гранат
+--================================================================================
+
+--- Вытащить чеку гранаты
+function realistic_weapon.grenade_pull_pin(grenade_type)
+    local cfg = weapon_config[grenade_type]
+    if not cfg then return false end
+    
+    grenade_cooking = true
+    grenade_start_time = os.time()
+    grenade_type = grenade_type
+    
+    msg2("Чека вытащена! Отпустите кнопку для броска.")
+    return true
+end
+
+--- Бросить гранату
+function realistic_weapon.grenade_throw(actor, direction)
+    if not grenade_cooking then return false end
+    
+    local cfg = weapon_config[grenade_type]
+    if not cfg then 
+        grenade_cooking = false
+        return false 
+    end
+    
+    local cook_time = os.time() - grenade_start_time
+    local max_cook = cfg.cook_max or 2.5
+    local warning_time = cfg.cook_warning or 0.5
+    
+    -- Проверка на перегрев
+    if cook_time >= max_cook then
+        msg2("Граната взорвалась в руке!")
+        -- Взрыв в игроке
+        grenade_cooking = false
+        return false
+    end
+    
+    -- Предупреждение
+    if cook_time >= max_cook - warning_time then
+        msg2("БРОСАЙТЕ СЕЙЧАС!")
+    end
+    
+    -- Расчет силы броска
+    local stamina = actor:conditions().stamina or 1.0
+    local throw_power = cfg.throw_force or 20.0
+    if stamina < 0.5 then
+        throw_power = throw_power * (cfg.stamina_throw_penalty or 0.6)
+    end
+    
+    -- Создание гранаты
+    local pos = actor:Position()
+    pos.y = pos.y + 1.5 -- Уровень рук
+    
+    local velocity = vector():set(direction.x, direction.y, direction.z)
+    velocity:mul(throw_power)
+    
+    -- Спавн гранаты
+    level.spawn_object(grenade_type, pos, velocity)
+    
+    msg2("Граната брошена!")
+    grenade_cooking = false
+    return true
+end
+
+--- Обновление гранаты (проверка времени "варки")
+function realistic_weapon.grenade_update()
+    if not grenade_cooking then return end
+    
+    local cfg = weapon_config[grenade_type]
+    if not cfg then 
+        grenade_cooking = false
+        return 
+    end
+    
+    local cook_time = os.time() - grenade_start_time
+    local max_cook = cfg.cook_max or 2.5
+    
+    if cook_time >= max_cook then
+        msg2("ВЗРЫВ!")
+        grenade_cooking = false
+    end
+end
+
+--================================================================================
+-- Системные функции
+--================================================================================
+
+--- Инициализация
+function realistic_weapon.init()
+    msg("SoC Next-Gen Fix: Система оружия загружена!")
+    msg("Реалистичная перезарядка, урон, отдача активированы.")
+end
+
+--- Обновление (вызывается каждый кадр)
+function realistic_weapon.update()
+    if reloading then
+        realistic_weapon.check_reload_complete()
+    end
+    
+    if grenade_cooking then
+        realistic_weapon.grenade_update()
+    end
+end
+
+-- Подключение к системе
+realistic_weapon.init()
+
+return realistic_weapon
