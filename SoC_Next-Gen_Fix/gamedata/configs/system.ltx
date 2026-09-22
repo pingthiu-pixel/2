@@ -6,7 +6,13 @@
 mod_version = 1.0.0
 mod_name = SoC Next-Gen Fix
 mod_author = SoC Next-Gen Team
-mod_description = Оптимизация, стабильность и улучшенная графика для Stalker SoC
+mod_description = Оптимизация, стабильность, улучшенная графика и реалистичная перезарядка для Stalker SoC
+
+[includes]
+; Подключение дополнительных конфигов
+; Добавьте эти строки в соответствующие файлы игры или используйте через скрипт
+weapons_override = configs\weapons_override.ltx
+gameplay_realistic = configs\gameplay\weapons_realistic.ltx
 
 [performance_tips]
 ; Эти параметры НЕ читаются движком напрямую
@@ -40,3 +46,4 @@ original_soc = partial ; Работает с ограничениями ориг
 ; 2. Для полной поддержки многопоточности установите OGSR Engine или OpenXRay
 ; 3. Примените 4GB patch для использования > 2GB RAM
 ; 4. Выберите пресет графики в зависимости от вашего железа
+; 5. Реалистичная перезарядка активируется автоматически
